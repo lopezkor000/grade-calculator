@@ -58,6 +58,40 @@ def getCurrentAverage(*args) -> float:
 
     return round(total, 2)
 
+def predictGrade(value: float):
+    grade = 0
+    for category in data["category"]:
+        total = 0
+
+        course_work = data["course-work"][category]
+        weight = data["category"][category]
+
+        for item in data["course-work"][category]:
+            if item != None:
+                total += item
+            else:
+                total += value
+        
+        if len(course_work) - course_work.count(None) < 1:
+            grade += value * weight
+            continue
+
+        average = total/(len(course_work))
+        weighed = average * weight
+
+        grade += weighed
+
+    return grade
+
+def threeGradeSummary(current_grade: float, *args):
+    bareMinimum = predictGrade(60)
+    average = predictGrade(current_grade)
+    perfect = predictGrade(100)
+
+    args[0].write(f'\nTHREE GRADE SUMMARY:')
+    args[0].write(f'\n- 60: {bareMinimum:.2f}\n- average: {average:.2f}\n- 100: {perfect:.2f}\n')
+    args[0].write("\n"+"="*20+"\n")
+
 def main():
     directory = "./courses"
     with open("results.txt", "w") as results:
@@ -65,7 +99,7 @@ def main():
             readData(f'{directory}/{file}')
 
             # print(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
-            results.write(f'\n{"~"*6}[ {file[:-5]} ]{"~"*6}')
+            results.write(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
 
             current_grade = getCurrentAverage(results)
 
@@ -73,6 +107,8 @@ def main():
             # print(f'Current Grade: {current_grade}')
             # print('-'*20, '\n')
             results.write('-'*20+f'\nCurrent Grade: {current_grade}\n'+'-'*20+'\n')
+
+            threeGradeSummary(current_grade, results)
 
 if __name__ == "__main__":
     main()
