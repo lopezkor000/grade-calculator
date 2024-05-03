@@ -1,0 +1,10 @@
+{
+    "category": {
+        "assignment": 0.30,
+        "test": 0.70
+    },
+    "course-work": {
+        "assignment": [100, 100, 70, null],
+        "test": [90, 80, null]
+    }
+}
