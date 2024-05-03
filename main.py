@@ -94,6 +94,10 @@ def threeGradeSummary(current_grade: float, *args):
 
 def main():
     directory = "./courses"
+
+    if os.path.exists("./results.txt"):
+        os.remove("results.txt")
+    
     with open("results.txt", "w") as results:
         for file in os.listdir(directory):
             readData(f'{directory}/{file}')
