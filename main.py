@@ -100,6 +100,9 @@ def main():
     
     with open("results.txt", "w") as results:
         for file in os.listdir(directory):
+            if file == "template.txt":
+                continue
+            
             readData(f'{directory}/{file}')
 
             # print(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
