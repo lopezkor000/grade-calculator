@@ -39,7 +39,7 @@ def courseWorkAverage(category: str) -> tuple:
 
     return (average, weighed)
 
-def getCurrentAverage() -> float:
+def getCurrentAverage(*args) -> float:
     """
     Calculates your current course average, excluding ungraded assignments.
 
@@ -51,7 +51,8 @@ def getCurrentAverage() -> float:
         current = courseWorkAverage(category)[1]
         weigh = data["category"][category]
 
-        print(f'\n{category.upper()}: {current:.2f} / {weigh*100:.2f}\n')
+        # print(f'\n{category.upper()}: {current:.2f} / {weigh*100:.2f}\n')
+        args[0].write(f'\n{category.upper()}: {current:.2f} / {weigh*100:.2f}\n')
 
         total += current
 
@@ -59,16 +60,19 @@ def getCurrentAverage() -> float:
 
 def main():
     directory = "./courses"
-    for file in os.listdir(directory):
-        readData(f'{directory}/{file}')
+    with open("results.txt", "w") as results:
+        for file in os.listdir(directory):
+            readData(f'{directory}/{file}')
 
-        print(f'\n{"~"*6}[ {file[:-5]} ]{"~"*6}')
+            # print(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
+            results.write(f'\n{"~"*6}[ {file[:-5]} ]{"~"*6}')
 
-        current_grade = getCurrentAverage()
+            current_grade = getCurrentAverage(results)
 
-        print('-'*20)
-        print(f'Current Grade: {current_grade}')
-        print('-'*20, '\n')
+            # print('-'*20)
+            # print(f'Current Grade: {current_grade}')
+            # print('-'*20, '\n')
+            results.write('-'*20+f'\nCurrent Grade: {current_grade}\n'+'-'*20+'\n')
 
 if __name__ == "__main__":
     main()
