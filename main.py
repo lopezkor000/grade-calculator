@@ -31,7 +31,10 @@ def courseWorkAverage(category: str) -> tuple:
         if item != None:
             total += item
     
-    average = total/(len(course_work)-course_work.count(None))
+    if len(course_work) - course_work.count(None) < 1:
+        return (weight*100, weight*100)
+
+    average = total/(len(course_work) - course_work.count(None))
     weighed = average * weight
 
     return (average, weighed)

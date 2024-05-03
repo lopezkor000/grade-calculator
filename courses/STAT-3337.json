@@ -1,0 +1,12 @@
+{
+    "category": {
+        "homework": 0.30,
+        "midterm": 0.40,
+        "final": 0.35
+    },
+    "course-work": {
+        "homework": [83.53, 66.67, 90, 0, 52, 75, null],
+        "midterm": [100, 71.43],
+        "final": [null]
+    }
+}

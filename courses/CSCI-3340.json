@@ -1,0 +1,16 @@
+{
+    "category": {
+        "assignment": 0.10,
+        "quiz": 0.10,
+        "test": 0.40,
+        "project": 0.35,
+        "discussion": 0.05
+    },
+    "course-work": {
+        "assignment": [90, 100, 100.5, 100, 100, 100, 95, 100, 93, 100, 92, null, 0],
+        "quiz": [100, 70, 95, 97, 92, 60, 90, 94, 95],
+        "test": [110.20, null],
+        "project": [null],
+        "discussion": [null]
+    }
+}
