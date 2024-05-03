@@ -1,4 +1,5 @@
 import json
+import os
 
 def readData(file_name: str) -> dict:
     """
@@ -54,13 +55,17 @@ def getCurrentAverage() -> float:
     return round(total, 2)
 
 def main():
-    readData("./courses/CSCI-3333.json")
+    directory = "./courses"
+    for file in os.listdir(directory):
+        readData(f'{directory}/{file}')
 
-    current_grade = getCurrentAverage()
+        print(f'\n{"~"*6}[ {file[:-5]} ]{"~"*6}')
 
-    print('-'*20)
-    print(f'Current Grade: {current_grade}')
-    print('-'*20)
+        current_grade = getCurrentAverage()
+
+        print('-'*20)
+        print(f'Current Grade: {current_grade}')
+        print('-'*20, '\n')
 
 if __name__ == "__main__":
     main()
