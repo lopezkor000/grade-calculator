@@ -46,13 +46,14 @@ def getCurrentAverage(*args) -> float:
     returns course average
     """
     total = 0
+
+    args[0].write('|Course-Work|Grade|\n|-|-|\n')
     
     for category in data["category"]:
         current = courseWorkAverage(category)[1]
         weigh = data["category"][category]
 
-        # print(f'\n{category.upper()}: {current:.2f} / {weigh*100:.2f}\n')
-        args[0].write(f'\n{category.upper()}: {current:.2f} / {weigh*100:.2f}\n')
+        args[0].write(f'|{category.upper()}|{current:.2f} / {weigh*100:.2f}|\n')
 
         total += current
 
@@ -90,32 +91,31 @@ def threeGradeSummary(current_grade: float, *args):
 
     args[0].write(f'\nTHREE GRADE SUMMARY:')
     args[0].write(f'\n- 60: {bareMinimum:.2f}\n- average: {average:.2f}\n- 100: {perfect:.2f}\n')
-    args[0].write("\n"+"="*20+"\n")
 
 def main():
     directory = "./courses"
 
-    if os.path.exists("./results.txt"):
-        os.remove("results.txt")
+    if os.path.exists("./results.md"):
+        os.remove("results.md")
     
-    with open("results.txt", "w") as results:
+    with open("results.md", "w") as results:
         for file in os.listdir(directory):
             if file == "template.txt":
                 continue
             
             readData(f'{directory}/{file}')
 
-            # print(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
-            results.write(f'\n\n{"~"*6}[ {file[:-5]} ]{"~"*6}\n')
+            results.write(f'# {file[:-5]}\n')
 
+            # results.write("```")
             current_grade = getCurrentAverage(results)
-
-            # print('-'*20)
-            # print(f'Current Grade: {current_grade}')
-            # print('-'*20, '\n')
-            results.write('-'*20+f'\nCurrent Grade: {current_grade}\n'+'-'*20+'\n')
+            # results.write("```")
+            
+            results.write(f'\n## Current Grade: {current_grade}\n')
 
             threeGradeSummary(current_grade, results)
+
+            results.write('-'*10+'\n')
 
 if __name__ == "__main__":
     main()
