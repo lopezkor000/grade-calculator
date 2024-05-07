@@ -59,6 +59,24 @@ def getCurrentAverage(*args) -> float:
 
     return round(total, 2)
 
+def letterGrade(grade: float) -> str:
+    letter = ""
+
+    if grade < 60:
+        letter = "F"
+    elif grade < 70:
+        letter = "D"
+    elif grade < 80:
+        letter = "C"
+    elif grade < 90:
+        letter = "B"
+    else:
+        letter = "A"
+
+    gpa.append(letter)
+
+    return letter
+
 def predictGrade(value: float):
     grade = 0
     for category in data["category"]:
@@ -81,6 +99,9 @@ def predictGrade(value: float):
         weighed = average * weight
 
         grade += weighed
+    
+    if grade > 100:
+        return 100
 
     return grade
 
@@ -93,6 +114,41 @@ def threeGradeSummary(current_grade: float, *args):
     args[0].write(f'\n- 60: {bareMinimum:.2f}\n- average: {average:.2f}\n- 100: {perfect:.2f}\n')
     args[0].write("\n<br></br>\n")
 
+def writeGradeResults(dir: str, *args):
+    results = args[0]
+    for file in os.listdir(dir):
+        if file == "template.txt":
+            continue
+        
+        readData(f'{dir}/{file}')
+
+        results.write(f'# {file[:-5]}\n')
+
+        # results.write("```")
+        current_grade = getCurrentAverage(results)
+        # results.write("```")
+        
+        results.write(f'\n## Current Grade: {current_grade} [{letterGrade(current_grade)}]\n')
+
+        threeGradeSummary(current_grade, results)
+
+        results.write('-'*10+'\n')
+
+def gpaCalculate() -> float:
+    total = 0.0
+
+    for letter in gpa:
+        if letter == "A":
+            total += 4
+        if letter == "B":
+            total += 3
+        if letter == "C":
+            total += 2
+        if letter == "D":
+            total += 1
+
+    return round(total / len(gpa), 3)
+
 def main():
     directory = "./courses"
 
@@ -100,23 +156,10 @@ def main():
         os.remove("results.md")
     
     with open("results.md", "w") as results:
-        for file in os.listdir(directory):
-            if file == "template.txt":
-                continue
-            
-            readData(f'{directory}/{file}')
-
-            results.write(f'# {file[:-5]}\n')
-
-            # results.write("```")
-            current_grade = getCurrentAverage(results)
-            # results.write("```")
-            
-            results.write(f'\n## Current Grade: {current_grade}\n')
-
-            threeGradeSummary(current_grade, results)
-
-            results.write('-'*10+'\n')
+        global gpa
+        gpa = []
+        writeGradeResults(directory, results)
+        results.write(f"# Semester GPA: {gpaCalculate()}")
 
 if __name__ == "__main__":
     main()
