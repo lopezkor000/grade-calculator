@@ -91,6 +91,7 @@ def threeGradeSummary(current_grade: float, *args):
 
     args[0].write(f'\nTHREE GRADE SUMMARY:')
     args[0].write(f'\n- 60: {bareMinimum:.2f}\n- average: {average:.2f}\n- 100: {perfect:.2f}\n')
+    args[0].write("\n<br></br>\n")
 
 def main():
     directory = "./courses"
