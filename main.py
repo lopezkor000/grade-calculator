@@ -77,7 +77,7 @@ def letterGrade(grade: float) -> str:
 
     return letter
 
-def predictGrade(value: float):
+def predictGrade(value: float) -> float:
     grade = 0
     for category in data["category"]:
         total = 0
@@ -149,8 +149,27 @@ def gpaCalculate() -> float:
 
     return round(total / len(gpa), 3)
 
+def selection(dir: str = "./courses/") -> str:
+    years = os.listdir(dir)
+    for i, year in enumerate(years):
+        if os.path.isdir(dir+year):
+            print(f"{i}) {year}")
+    year_pick = int(input("\nWhich year: "))
+    dir += years[year_pick] + "/"
+
+    print()
+
+    semesters = os.listdir(dir)
+    for i, semester in enumerate(semesters):
+        if os.path.isdir(dir+semester):
+            print(f"{i}) {semester}")
+    semester_pick = int(input("\nWhich semester: "))
+    dir += semesters[semester_pick] + "/"
+
+    return dir
+
 def main():
-    directory = "./courses"
+    directory = selection()
 
     if os.path.exists("./results.md"):
         os.remove("results.md")
