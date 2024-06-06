@@ -162,3 +162,4 @@ cython_debug/
 courses/*
 !courses/template.txt
 results*
+GUI/
