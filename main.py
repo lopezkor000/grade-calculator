@@ -114,8 +114,9 @@ def threeGradeSummary(current_grade: float, *args):
     args[0].write(f'\n- 60: {bareMinimum:.2f}\n- average: {average:.2f}\n- 100: {perfect:.2f}\n')
     args[0].write("\n<br></br>\n")
 
-def writeGradeResults(dir: str, *args):
+def writeGradeResults(dir: str, *args) -> list[tuple]:
     results = args[0]
+    gradesSum = []
     for file in os.listdir(dir):
         if file == "template.txt":
             continue
@@ -124,15 +125,15 @@ def writeGradeResults(dir: str, *args):
 
         results.write(f'# {file[:-5]}\n')
 
-        # results.write("```")
         current_grade = getCurrentAverage(results)
-        # results.write("```")
+        gradesSum.append((file[:-5], current_grade))
         
         results.write(f'\n## Current Grade: {current_grade} [{letterGrade(current_grade)}]\n')
 
         threeGradeSummary(current_grade, results)
 
         results.write('-'*10+'\n')
+    return gradesSum
 
 def gpaCalculate() -> float:
     total = 0.0
@@ -151,19 +152,21 @@ def gpaCalculate() -> float:
 
 def selection(dir: str = "./courses/") -> str:
     years = os.listdir(dir)
-    for i, year in enumerate(years):
-        if os.path.isdir(dir+year):
-            print(f"{i}) {year}")
-    year_pick = int(input("\nWhich year: "))
+    # for i, year in enumerate(years):
+    #     if os.path.isdir(dir+year):
+    #         print(f"{i}) {year}")
+    # year_pick = int(input("\nWhich year: "))
+    year_pick = 0
     dir += years[year_pick] + "/"
 
-    print()
+    # print()
 
     semesters = os.listdir(dir)
-    for i, semester in enumerate(semesters):
-        if os.path.isdir(dir+semester):
-            print(f"{i}) {semester}")
-    semester_pick = int(input("\nWhich semester: "))
+    # for i, semester in enumerate(semesters):
+    #     if os.path.isdir(dir+semester):
+    #         print(f"{i}) {semester}")
+    # semester_pick = int(input("\nWhich semester: "))
+    semester_pick = 2
     dir += semesters[semester_pick] + "/"
 
     return dir
@@ -177,8 +180,10 @@ def main():
     with open("results.md", "w") as results:
         global gpa
         gpa = []
-        writeGradeResults(directory, results)
+        gradesSum = writeGradeResults(directory, results)
         results.write(f"# Semester GPA: {gpaCalculate()}")
+    
+    return gradesSum
 
 if __name__ == "__main__":
     main()

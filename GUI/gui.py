@@ -10,7 +10,7 @@ class App(tk.Tk):
         self.frames = {}
         for F in (SummaryMain, SummaryMain):
             page_name = F.__name__
-            frame = F(parent=root, controller=self)
+            frame = F(parent=root)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0)
     
